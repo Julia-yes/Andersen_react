@@ -5,6 +5,7 @@ import Header from "components/Header";
 import Users from "pages/Users";
 import styled from "styled-components";
 import { Colors } from "enums/colors";
+import { updateScreenType } from "utils/defineScreenSize";
 
 const Page = styled.section`
   display: flex;
@@ -21,6 +22,8 @@ const StyledMain = styled.section`
 `;
 
 function App() {
+  const root = document.getElementById("root");
+  root?.addEventListener("resize", updateScreenType);
   return (
     <Page>
       <Header />

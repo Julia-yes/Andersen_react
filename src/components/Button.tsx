@@ -1,15 +1,17 @@
 import styled from "styled-components";
 import { Colors } from "enums/colors";
+import { ScreenType } from "utils/defineScreenSize";
+import { DeviceType } from "enums/deviceType";
 
 const StyledButton = styled.button`
   color: ${Colors.VIOLET};
   border: 2px solid ${Colors.VIOLET};
   border-radius: 5px;
   background-color: ${Colors.BLUE_LIGHT};
-  font-size: 18px;
+  font-size: ${ScreenType === DeviceType.PHONE ? "12px" : "18px"};
   cursor: pointer;
   transition: border-color 0.3s;
-  width: 100px;
+  width: ${ScreenType === DeviceType.PHONE ? "70px" : "100px"};
 
   &:hover {
     border-color: ${Colors.YELLOW};
