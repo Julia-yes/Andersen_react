@@ -1,11 +1,12 @@
-import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
 import Logo from "./Logo";
 import { Colors } from "enums/colors";
 import Button from "./Button";
 import { useState } from "react";
-import Modal from "./Modal";
+import NavItem from "./NavItem";
+import PopUp from "./Pop-up";
+import PopUpArea from "./Pop-upArea";
 
 const StyledNav = styled.nav`
   display: flex;
@@ -34,6 +35,13 @@ const NavUnlisted = styled.ul`
   }
 `;
 
+const StyledButton = styled.nav`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+`;
+
 function Header() {
   const [isOpenModal, setIsOpen] = useState<boolean>(false);
   const [isAuth, setAuth] = useState<boolean>(false);
@@ -58,44 +66,30 @@ function Header() {
     <StyledNav>
       <Logo />
       <NavUnlisted>
-        <NavLink
-          to={"/"}
-          className={({ isActive, isPending }) =>
-            isPending ? "pending" : isActive ? "active" : ""
-          }
-        >
-          Home
-        </NavLink>
-        <NavLink
-          to={"/contacts"}
-          className={({ isActive, isPending }) =>
-            isPending ? "pending" : isActive ? "active" : ""
-          }
-        >
-          Contacts
-        </NavLink>
-        <NavLink
-          to={"/users"}
-          className={({ isActive, isPending }) =>
-            isPending ? "pending" : isActive ? "active" : ""
-          }
-        >
-          Users
-        </NavLink>
+        <NavItem path={"/"} title="Home" />
+        <NavItem path={"/contacts"} title="Contacts" />
+        <NavItem path={"/users"} title="Users" />
       </NavUnlisted>
-      <Button callback={isOpenModal ? closeModal : openModal} content="Sign" />
-      {isOpenModal && (
-        <Modal>
-          {!isAuth ? (
-            <>
-              <Button content="Sign in" callback={logIn} />
-              <Button content="Sign up" callback={logIn} />
-            </>
-          ) : (
-            <Button callback={logOut} content="Log out" />
-          )}
-        </Modal>
-      )}
+      <PopUpArea>
+        <StyledButton>
+          <Button
+            callback={isOpenModal ? closeModal : openModal}
+            content={isAuth ? "Login" : "Sign"}
+          />
+        </StyledButton>
+        {isOpenModal && (
+          <PopUp>
+            {!isAuth ? (
+              <>
+                <Button content="Sign in" callback={logIn} />
+                <Button content="Sign up" callback={logIn} />
+              </>
+            ) : (
+              <Button callback={logOut} content="Log out" />
+            )}
+          </PopUp>
+        )}
+      </PopUpArea>
     </StyledNav>
   );
 }

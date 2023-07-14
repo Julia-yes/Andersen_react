@@ -9,6 +9,7 @@ const StyledButton = styled.button`
   font-size: 18px;
   cursor: pointer;
   transition: border-color 0.3s;
+  width: 100px;
 
   &:hover {
     border-color: ${Colors.YELLOW};
