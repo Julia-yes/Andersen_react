@@ -3,13 +3,13 @@ import styled from "styled-components";
 import Logo from "./Logo";
 import { Colors } from "enums/colors";
 import Button from "./Button";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import NavItem from "./NavItem";
 import PopUp from "./Pop-up";
 import PopUpArea, { StyledPopUpArea } from "./Pop-upArea";
-import { ScreenType } from "utils/defineScreenSize";
 import { DeviceType } from "enums/deviceType";
 import BurgerMenu from "./BurgerMenu";
+import { DeviceContext } from "context/deviceContext";
 
 const StyledNav = styled.nav`
   display: flex;
@@ -19,8 +19,8 @@ const StyledNav = styled.nav`
   background-color: ${Colors.GREEN};
 `;
 
-const StyledNavList = styled.ul`
-  display: ${ScreenType === DeviceType.PHONE ? "none" : "flex"};
+const StyledNavList = styled.ul<{ device: string }>`
+  display: ${(props) => (props.device === DeviceType.PHONE ? "none" : "flex")};
   gap: 10px;
   padding: 0;
 
@@ -60,6 +60,7 @@ const StyledPopUpAreaWithOrder = styled(StyledPopUpArea)`
 `;
 
 function Header() {
+  const { device } = useContext(DeviceContext);
   const [isOpenPopUp, setIsOpen] = useState<boolean>(false);
   const [isAuth, setAuth] = useState<boolean>(false);
   const [isShownMenu, setShowMenu] = useState<boolean>(false);
@@ -87,7 +88,7 @@ function Header() {
   return (
     <StyledNav>
       <Logo />
-      {ScreenType === DeviceType.PHONE && (
+      {device === DeviceType.PHONE && (
         <StyledPopUpAreaWithOrder>
           <StyledButton>
             <BurgerMenu callback={showMenu}>
@@ -96,7 +97,7 @@ function Header() {
           </StyledButton>
           {isShownMenu && (
             <PopUp position="left">
-              <StyledNavListVertical>
+              <StyledNavListVertical device={device}>
                 <NavItem path={"/"} title="Home" />
                 <NavItem path={"/contacts"} title="Contacts" />
                 <NavItem path={"/users"} title="Users" />
@@ -105,7 +106,7 @@ function Header() {
           )}
         </StyledPopUpAreaWithOrder>
       )}
-      <StyledNavList>
+      <StyledNavList device={device}>
         <NavItem path={"/"} title="Home" />
         <NavItem path={"/contacts"} title="Contacts" />
         <NavItem path={"/users"} title="Users" />

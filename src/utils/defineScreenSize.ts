@@ -12,10 +12,4 @@ const defineScreenSize = () => {
   }
 };
 
-export let ScreenType = defineScreenSize();
-
-export const updateScreenType = async () => {
-  ScreenType = await defineScreenSize();
-};
-
 export default defineScreenSize;
