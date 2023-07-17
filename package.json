@@ -2,6 +2,14 @@
   "name": "react_andersen",
   "version": "0.1.0",
   "private": true,
+  "jest": {
+    "coveragePathIgnorePatterns": [
+      "src/index.tsx",
+      "src/reportWebVitals.js",
+      "src/utils",
+      "src/enums"
+    ]
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -23,6 +31,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "coverage": "react-scripts test --env=jsdom --watchAll=false --coverage",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
