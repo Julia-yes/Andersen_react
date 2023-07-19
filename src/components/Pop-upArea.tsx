@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import { memo, PropsWithChildren } from "react";
 
-const StyledPopUpArea = styled.div`
+export const StyledPopUpArea = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  align-items: end
+  align-items: end;
 `;
 
 const PopUpArea = memo(({ children }: PropsWithChildren) => {

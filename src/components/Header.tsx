@@ -3,10 +3,13 @@ import styled from "styled-components";
 import Logo from "./Logo";
 import { Colors } from "enums/colors";
 import Button from "./Button";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import NavItem from "./NavItem";
 import PopUp from "./Pop-up";
-import PopUpArea from "./Pop-upArea";
+import PopUpArea, { StyledPopUpArea } from "./Pop-upArea";
+import { DeviceType } from "enums/deviceType";
+import BurgerMenu from "./BurgerMenu";
+import { DeviceContext } from "context/deviceContext";
 
 const StyledNav = styled.nav`
   display: flex;
@@ -16,9 +19,10 @@ const StyledNav = styled.nav`
   background-color: ${Colors.GREEN};
 `;
 
-const NavUnlisted = styled.ul`
-  display: flex;
+const StyledNavList = styled.ul<{ device: string }>`
+  display: ${(props) => (props.device === DeviceType.PHONE ? "none" : "flex")};
   gap: 10px;
+  padding: 0;
 
   a {
     text-decoration: none;
@@ -33,6 +37,15 @@ const NavUnlisted = styled.ul`
   .active {
     color: ${Colors.VIOLET};
   }
+
+  .open {
+    background-color: red;
+  }
+`;
+
+const StyledNavListVertical = styled(StyledNavList)`
+  display: flex;
+  flex-direction: column;
 `;
 
 const StyledButton = styled.nav`
@@ -42,43 +55,71 @@ const StyledButton = styled.nav`
   height: 100%;
 `;
 
-function Header() {
-  const [isOpenModal, setIsOpen] = useState<boolean>(false);
-  const [isAuth, setAuth] = useState<boolean>(false);
+const StyledPopUpAreaWithOrder = styled(StyledPopUpArea)`
+  order: -1;
+`;
 
-  const openModal = () => {
+function Header() {
+  const { device } = useContext(DeviceContext);
+  const [isOpenPopUp, setIsOpen] = useState<boolean>(false);
+  const [isAuth, setAuth] = useState<boolean>(false);
+  const [isShownMenu, setShowMenu] = useState<boolean>(false);
+
+  const openPopUp = () => {
     setIsOpen(true);
   };
-  const closeModal = () => {
+  const closePopUp = () => {
     setIsOpen(false);
   };
 
   const logIn = () => {
     setAuth(true);
-    closeModal();
+    closePopUp();
   };
   const logOut = () => {
     setAuth(false);
-    closeModal();
+    closePopUp();
+  };
+
+  const showMenu = () => {
+    setShowMenu(!isShownMenu);
   };
 
   return (
     <StyledNav>
       <Logo />
-      <NavUnlisted>
+      {device === DeviceType.PHONE && (
+        <StyledPopUpAreaWithOrder>
+          <StyledButton>
+            <BurgerMenu callback={showMenu}>
+              <span className="material-icons">menu</span>
+            </BurgerMenu>
+          </StyledButton>
+          {isShownMenu && (
+            <PopUp position="left">
+              <StyledNavListVertical device={device}>
+                <NavItem path={"/"} title="Home" />
+                <NavItem path={"/contacts"} title="Contacts" />
+                <NavItem path={"/users"} title="Users" />
+              </StyledNavListVertical>
+            </PopUp>
+          )}
+        </StyledPopUpAreaWithOrder>
+      )}
+      <StyledNavList device={device}>
         <NavItem path={"/"} title="Home" />
         <NavItem path={"/contacts"} title="Contacts" />
         <NavItem path={"/users"} title="Users" />
-      </NavUnlisted>
+      </StyledNavList>
       <PopUpArea>
         <StyledButton>
           <Button
-            callback={isOpenModal ? closeModal : openModal}
+            callback={isOpenPopUp ? closePopUp : openPopUp}
             content={isAuth ? "Login" : "Sign"}
           />
         </StyledButton>
-        {isOpenModal && (
-          <PopUp>
+        {isOpenPopUp && (
+          <PopUp position="right">
             {!isAuth ? (
               <>
                 <Button content="Sign in" callback={logIn} />

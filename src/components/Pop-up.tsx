@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import { Colors } from "enums/colors";
-import { memo, PropsWithChildren } from "react";
+import { memo, ReactNode } from "react";
 
-const StyledPopUp = styled.div`
+const StyledPopUp = styled.div<{ position: string }>`
   position: absolute;
   top: 50px;
-  right: 0;
+  ${(props) => props.position}: 0;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -16,8 +16,13 @@ const StyledPopUp = styled.div`
   padding: 20px;
 `;
 
-const PopUp = memo(({ children }: PropsWithChildren) => {
-  return <StyledPopUp>{children}</StyledPopUp>;
+type IProps = {
+  children: ReactNode;
+  position: string;
+};
+
+const PopUp = memo(({ children, position }: IProps) => {
+  return <StyledPopUp position={position}>{children}</StyledPopUp>;
 });
 
 export default PopUp;
