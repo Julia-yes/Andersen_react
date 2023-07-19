@@ -22,7 +22,7 @@ type IProps = {
 };
 
 const PopUp = memo(({ children, position }: IProps) => {
-  return <StyledPopUp position={position}>{children}</StyledPopUp>;
+  return <StyledPopUp data-testid="PopUp"  position={position}>{children}</StyledPopUp>;
 });
 
 export default PopUp;

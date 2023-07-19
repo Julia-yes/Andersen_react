@@ -91,7 +91,7 @@ function Header() {
       {device === DeviceType.PHONE && (
         <StyledPopUpAreaWithOrder>
           <StyledButton>
-            <BurgerMenu callback={showMenu}>
+            <BurgerMenu data-testid="BurgerMenu" callback={showMenu}>
               <span className="material-icons">menu</span>
             </BurgerMenu>
           </StyledButton>
