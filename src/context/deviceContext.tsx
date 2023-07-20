@@ -11,7 +11,7 @@ export const DeviceContext = createContext<IDeviceContext>({
   setNewDevice: () => {},
 });
 
-export const DataProvider = memo(({ children }: PropsWithChildren) => {
+export const DeviceProvider = memo(({ children }: PropsWithChildren) => {
   let currentDevice = defineScreenSize();
   const setNewDevice = useCallback(() => {
     const newCurrentDevice = defineScreenSize();

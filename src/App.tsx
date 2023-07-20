@@ -5,7 +5,8 @@ import Header from "components/Header";
 import Users from "pages/Users";
 import styled from "styled-components";
 import { Colors } from "enums/colors";
-import { DataProvider } from "context/deviceContext";
+import { DeviceProvider } from "context/deviceContext";
+import { DataProvider } from "context/dataContext";
 
 const Page = styled.section`
   display: flex;
@@ -24,16 +25,23 @@ const StyledMain = styled.section`
 function App() {
   return (
     <Page>
-      <DataProvider>
+      <DeviceProvider>
         <Header />
         <StyledMain>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route
+              path="/"
+              element={
+                <DataProvider>
+                  <Home />
+                </DataProvider>
+              }
+            />
             <Route path="/contacts" element={<Contacts />} />
             <Route path="/users" element={<Users />} />
           </Routes>
         </StyledMain>
-      </DataProvider>
+      </DeviceProvider>
     </Page>
   );
 }

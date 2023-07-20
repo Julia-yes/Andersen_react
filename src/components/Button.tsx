@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Colors } from "enums/colors";
 import { DeviceType } from "enums/deviceType";
-import { useContext } from "react";
+import { PropsWithChildren, useContext } from "react";
 import { DeviceContext } from "context/deviceContext";
 
 const StyledButton = styled.button<{ device: string }>`
@@ -20,15 +20,15 @@ const StyledButton = styled.button<{ device: string }>`
 `;
 
 type IProps = {
-  content: string;
+  content?: string;
   callback: () => void;
 };
 
-const Button = ({ content, callback }: IProps) => {
+const Button = (props: PropsWithChildren<IProps>) => {
   const { device } = useContext(DeviceContext);
   return (
-    <StyledButton device={device} onClick={callback}>
-      {content}
+    <StyledButton device={device} onClick={props.callback}>
+      {props.content ? props.content : props.children}
     </StyledButton>
   );
 };
