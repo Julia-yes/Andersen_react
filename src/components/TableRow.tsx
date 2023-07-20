@@ -6,10 +6,18 @@ import { IListItem } from "interfaces/listItem";
 import ContainerButton from "./ContainerButton";
 import { DataContext } from "context/dataContext";
 import { TypeListProp } from "enums/typeListProp";
+import { Colors } from "enums/colors";
 
-const StyledCell = styled.div`
+const StyledCellContainer = styled.div`
   display: flex;
   justify-content: space-around;
+`;
+
+const StyledCell = styled.td`
+  cursor: pointer;
+  &:hover {
+    background-color: ${Colors.BLUE_GRAY};
+  }
 `;
 
 type IProps = {
@@ -20,7 +28,6 @@ type IProps = {
 };
 
 function TableRow({ item, index, type, parrentId }: IProps) {
-  console.log(item, index, type, parrentId);
   const { setNewData } = useContext(DataContext);
   const [isShown, setShown] = useState(false);
 
@@ -33,21 +40,21 @@ function TableRow({ item, index, type, parrentId }: IProps) {
   return (
     <>
       <tr>
-        <td>
-          <StyledCell>
+        <StyledCell>
+          <StyledCellContainer>
             {item.name}
             {"content" in item && <ContainerButton content={item.content} callback={showItems} />}
-          </StyledCell>
-        </td>
-        <td>
+          </StyledCellContainer>
+        </StyledCell>
+        <StyledCell>
           <input type="checkbox" defaultChecked={item.checkbox} />
-        </td>
-        <td>{item.description}</td>
-        <td>
+        </StyledCell>
+        <StyledCell>{item.description}</StyledCell>
+        <StyledCell>
           <Button callback={deleteItem}>
             <span className="material-icons">delete</span>
           </Button>
-        </td>
+        </StyledCell>
       </tr>
       {isShown &&
         "content" in item &&
