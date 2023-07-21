@@ -5,6 +5,7 @@ import { Colors } from "enums/colors";
 import { handleKey } from "utils/handleKey";
 import { focusElement } from "utils/focusElement";
 import { useAppSelector } from "redux/hooks";
+import { useEffect } from "react";
 
 const StyledTable = styled.table`
   border-collapse: collapse;
@@ -23,7 +24,11 @@ const StyledTable = styled.table`
 `;
 
 function Home() {
-  document.body.addEventListener("keydown", handleKey);
+  useEffect(() => {
+    document.body.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, []);
+
   const data = useAppSelector((state) => state.data.data);
 
   return (

@@ -3,6 +3,7 @@ import { mockData } from "utils/mockData";
 import { IActionProps } from "interfaces/actionProps";
 import { TypeListProp } from "enums/typeListProp";
 import { ITableRow } from "interfaces/tableRow";
+import { IActionPropsWithText } from "interfaces/actionPropsWithText";
 
 export interface DataState {
   data: ITableRow[];
@@ -32,10 +33,66 @@ export const dataSlice = createSlice({
         }
       }
     },
+    changeCheckbox: (state, action: PayloadAction<IActionProps>) => {
+      if (action.payload.type === TypeListProp.CONTAINER) {
+        const changedElement = state.data.find((item) => item.id === action.payload.id);
+        if (changedElement) {
+          const value = !changedElement.checkbox;
+          changedElement.checkbox = value;
+          changedElement.content.map((item) => (item.checkbox = value));
+        }
+      } else {
+        if (action.payload.parrentId) {
+          const parrentElement = state.data.find((item) => item.id === action.payload.parrentId);
+          if (parrentElement) {
+            const changedElement = parrentElement.content.find(
+              (item) => item.id === action.payload.id
+            );
+            if (changedElement) changedElement.checkbox = !changedElement.checkbox;
+          }
+        }
+      }
+    },
+    changeDescription: (state, action: PayloadAction<IActionPropsWithText>) => {
+      if (action.payload.type === TypeListProp.CONTAINER) {
+        const changedElement = state.data.find((item) => item.id === action.payload.id);
+        if (changedElement) {
+          changedElement.description = action.payload.text;
+        }
+      } else {
+        if (action.payload.parrentId) {
+          const parrentElement = state.data.find((item) => item.id === action.payload.parrentId);
+          if (parrentElement) {
+            const changedElement = parrentElement.content.find(
+              (item) => item.id === action.payload.id
+            );
+            if (changedElement) changedElement.description = action.payload.text;
+          }
+        }
+      }
+    },
+    changeName: (state, action: PayloadAction<IActionPropsWithText>) => {
+      if (action.payload.type === TypeListProp.CONTAINER) {
+        const changedElement = state.data.find((item) => item.id === action.payload.id);
+        if (changedElement) {
+          changedElement.name = action.payload.text;
+        }
+      } else {
+        if (action.payload.parrentId) {
+          const parrentElement = state.data.find((item) => item.id === action.payload.parrentId);
+          if (parrentElement) {
+            const changedElement = parrentElement.content.find(
+              (item) => item.id === action.payload.id
+            );
+            if (changedElement) changedElement.name = action.payload.text;
+          }
+        }
+      }
+    },
   },
 });
 
-export const { deleteItem } = dataSlice.actions;
+export const { deleteItem, changeCheckbox, changeDescription, changeName } = dataSlice.actions;
 
 //export const selectData = (state: RootState) => state.data.search;
 

@@ -1,6 +1,6 @@
 export interface IListItem {
-  name: String;
+  name: string;
   id: number;
   checkbox: boolean;
-  description: String;
+  description: string;
 }
