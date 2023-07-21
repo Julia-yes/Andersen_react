@@ -4,6 +4,8 @@ import { TypeListProp } from "enums/typeListProp";
 import { useContext } from "react";
 import { styled } from "styled-components";
 import { Colors } from "enums/colors";
+import { handleKey } from "utils/handleKey";
+import { focusElement } from "utils/focusElement";
 
 const StyledTable = styled.table`
   border-collapse: collapse;
@@ -22,23 +24,9 @@ const StyledTable = styled.table`
 `;
 
 function Home() {
+  document.body.addEventListener("keydown", handleKey);
+
   const { data } = useContext(DataContext);
-
-  const focusElement = (e: React.MouseEvent<HTMLTableSectionElement>) => {
-    const allCells = document.querySelectorAll("td");
-    allCells.forEach((item) => item.classList.remove("onFocus"));
-    const elem = e.target as HTMLElement;
-    const currentCell = findTDElem(elem);
-    if (currentCell) currentCell.classList.add("onFocus");
-  };
-
-  function findTDElem(elem: HTMLElement) {
-    if (elem.tagName === "TD") {
-      return elem;
-    } else {
-      if (elem.parentElement) return findTDElem(elem.parentElement);
-    }
-  }
 
   return (
     <StyledTable>
