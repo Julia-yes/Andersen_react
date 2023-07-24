@@ -7,6 +7,11 @@ type IProps = {
 };
 
 const EditInput = ({ text, handleChange, handleClick }: IProps) => {
+  const handleKey = (e: any) => {
+    if (e.code === "Enter") {
+      handleClick();
+    }
+  };
   return (
     <>
       <input
@@ -15,10 +20,10 @@ const EditInput = ({ text, handleChange, handleClick }: IProps) => {
         onChange={(e) => {
           handleChange(e);
         }}
+        onKeyDown={handleKey}
+        onBlur={handleClick}
+        autoFocus
       ></input>
-      <button onClick={handleClick}>
-        <span className="material-icons">check</span>
-      </button>
     </>
   );
 };

@@ -22,6 +22,16 @@ const StyledCell = styled.td`
   }
 `;
 
+const StyledInput = styled.input`
+  background-color: transparent;
+  border: none;
+  outline: none;
+  caret-color: transparent;
+  &:focus {
+    border: 1px solid black;
+  }
+`;
+
 type IProps = {
   item: ITableRow | IListItem;
   index: number;
@@ -78,10 +88,28 @@ function TableRow({ item, index, type, parrentId }: IProps) {
     dispatch(changeDescription({ id: item.id, text: description, type }));
   };
 
+  const handleKeyCheckbox = (e: any) => {
+    if (e.code === "Enter") {
+      handleChange();
+    }
+  };
+
+  const handleKeyInput = (e: any) => {
+    if (e.code === "Enter") {
+      openEditModeDescription();
+    }
+  };
+
+  const handleKeyItem = (e: any) => {
+    if (e.code === "Enter") {
+      openEditModeName();
+    }
+  };
+
   return (
     <>
       <tr>
-        <StyledCell>
+        <StyledCell data-type={parrentId ? "item" : "container"}>
           <StyledCellContainer onDoubleClick={openEditModeName}>
             {editModeName ? (
               <EditInput
@@ -90,15 +118,20 @@ function TableRow({ item, index, type, parrentId }: IProps) {
                 handleClick={closeEditModeName}
               />
             ) : (
-              name
+              <StyledInput value={name} onChange={openEditModeName} onKeyDown={handleKeyItem} />
             )}
             {"content" in item && <ContainerButton content={item.content} callback={showItems} />}
           </StyledCellContainer>
         </StyledCell>
         <StyledCell>
-          <input type="checkbox" checked={item.checkbox} onChange={handleChange} />
+          <input
+            type="checkbox"
+            checked={item.checkbox}
+            onChange={handleChange}
+            onKeyDown={handleKeyCheckbox}
+          />
         </StyledCell>
-        <StyledCell onDoubleClick={openEditModeDescription}>
+        <StyledCell onDoubleClick={openEditModeDescription} data-type={"description"}>
           {editModeDescription ? (
             <EditInput
               text={description}
@@ -106,7 +139,11 @@ function TableRow({ item, index, type, parrentId }: IProps) {
               handleClick={closeEditModeDescription}
             />
           ) : (
-            description
+            <StyledInput
+              value={description}
+              onChange={openEditModeDescription}
+              onKeyDown={handleKeyInput}
+            />
           )}
         </StyledCell>
         <StyledCell>

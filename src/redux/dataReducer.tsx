@@ -94,6 +94,4 @@ export const dataSlice = createSlice({
 
 export const { deleteItem, changeCheckbox, changeDescription, changeName } = dataSlice.actions;
 
-//export const selectData = (state: RootState) => state.data.search;
-
 export default dataSlice.reducer;
