@@ -14,7 +14,11 @@ type IProps = {
 };
 
 const BurgerMenu = ({ children, callback }: IProps) => {
-  return <BurgerButton data-testid="BurgerButton" onClick={callback}>{children}</BurgerButton>;
+  return (
+    <BurgerButton data-testid="BurgerButton" onClick={callback}>
+      {children}
+    </BurgerButton>
+  );
 };
 
 export default BurgerMenu;
